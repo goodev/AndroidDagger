@@ -35,8 +35,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
 
-    api 'com.google.dagger:dagger:2.25'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.25'
+    api 'com.google.dagger:dagger:2.25.3'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.25.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

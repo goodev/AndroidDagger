@@ -8,14 +8,28 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.goodev.dagger.coffee.CoffeeMaker;
+
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    @Inject
+    CoffeeMaker mCoffeeMaker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //DaggerCoffeeComponent.builder().build().injectActivity(this);
+        // 在安卓开发中，一般在 Application 中保存一个全局的 Dagger component，
+        // 然后通过 Application 来复用 component，一般不通过上面的方式来使用。
+        CoffeeApplication app = (CoffeeApplication) getApplication();
+        app.getCoffeeComponent().injectActivity(this);
+        mCoffeeMaker.brew();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

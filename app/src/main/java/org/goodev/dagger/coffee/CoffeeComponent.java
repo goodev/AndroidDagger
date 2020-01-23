@@ -1,5 +1,7 @@
 package org.goodev.dagger.coffee;
 
+import org.goodev.dagger.course.MainActivity;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -13,4 +15,6 @@ import dagger.Component;
 @Component
 public interface CoffeeComponent {
     CoffeeMaker maker();
+
+    void injectActivity(MainActivity activity);
 }
