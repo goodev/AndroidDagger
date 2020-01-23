@@ -1,5 +1,7 @@
 package org.goodev.dagger.coffee;
 
+import javax.inject.Inject;
+
 /**
  * 热虹吸式抽水泵，需要<code> Heater </code> 对象，抽水泵 <code>Pump</code> 的实现。
  */
@@ -7,7 +9,8 @@ package org.goodev.dagger.coffee;
 public class Thermosiphon implements Pump {
     private final Heater heater;
 
-    public Thermosiphon(Heater heater) {
+    @Inject
+    public Thermosiphon(ElectricHeater heater) {
         this.heater = heater;
     }
 

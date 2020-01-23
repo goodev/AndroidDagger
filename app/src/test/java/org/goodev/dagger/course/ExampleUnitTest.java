@@ -1,9 +1,9 @@
 package org.goodev.dagger.course;
 
+import org.goodev.dagger.coffee.CoffeeComponent;
 import org.goodev.dagger.coffee.CoffeeMaker;
+import org.goodev.dagger.coffee.DaggerCoffeeComponent;
 import org.goodev.dagger.coffee.ElectricHeater;
-import org.goodev.dagger.coffee.Heater;
-import org.goodev.dagger.coffee.Pump;
 import org.goodev.dagger.coffee.Thermosiphon;
 import org.junit.Test;
 
@@ -16,9 +16,16 @@ import org.junit.Test;
 public class ExampleUnitTest {
     @Test
     public void testCoffeeMaker() {
-        Heater heater = new ElectricHeater();
-        Pump pump = new Thermosiphon(heater);
-        CoffeeMaker coffeeMaker = new CoffeeMaker(heater, pump);
+        ElectricHeater heater = new ElectricHeater();
+        Thermosiphon pump = new Thermosiphon(heater);
+        CoffeeMaker coffeeMaker = new CoffeeMaker(pump,heater);
         coffeeMaker.brew();
+    }
+
+    @Test
+    public void testDaggerCoffeeMaker() {
+        CoffeeComponent c = DaggerCoffeeComponent.builder().build();
+        CoffeeMaker maker = c.maker();
+        maker.brew();
     }
 }
