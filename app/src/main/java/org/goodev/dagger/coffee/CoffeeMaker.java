@@ -10,7 +10,7 @@ public class CoffeeMaker {
     private final Pump pump;
 
     @Inject
-    public CoffeeMaker(Thermosiphon pump, ElectricHeater heater) {
+    public CoffeeMaker(Pump pump, Heater heater) {
         this.heater = heater;
         this.pump = pump;
     }

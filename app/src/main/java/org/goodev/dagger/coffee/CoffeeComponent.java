@@ -12,7 +12,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component
+@Component(modules = {DripCoffeeModule.class})
 public interface CoffeeComponent {
     CoffeeMaker maker();
 

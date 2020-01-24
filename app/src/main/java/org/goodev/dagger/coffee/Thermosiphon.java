@@ -10,7 +10,7 @@ public class Thermosiphon implements Pump {
     private final Heater heater;
 
     @Inject
-    public Thermosiphon(ElectricHeater heater) {
+    public Thermosiphon(Heater heater) {
         this.heater = heater;
     }
 
