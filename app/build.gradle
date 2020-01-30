@@ -11,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "org.goodev.dagger.course.MyCustomTestRunner"
     }
 
     compileOptions {
@@ -23,6 +23,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
         }
     }
 }
@@ -39,6 +49,10 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.25.3'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:3.2.0'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    androidTestImplementation "androidx.test:runner:1.2.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 

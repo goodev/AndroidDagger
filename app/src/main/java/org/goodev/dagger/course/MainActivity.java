@@ -1,47 +1,68 @@
 package org.goodev.dagger.course;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.goodev.dagger.coffee.CoffeeMaker;
-
-import javax.inject.Inject;
+import org.goodev.dagger.course.login.LoginActivity;
+import org.goodev.dagger.course.registration.RegistrationActivity;
+import org.goodev.dagger.course.settings.SettingsActivity;
+import org.goodev.dagger.course.user.UserManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-    @Inject
-    CoffeeMaker mCoffeeMaker;
 
+    private MainViewModel mMainViewModel;
+    private TextView mNotificationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //DaggerCoffeeComponent.builder().build().injectActivity(this);
-        // 在安卓开发中，一般在 Application 中保存一个全局的 Dagger component，
-        // 然后通过 Application 来复用 component，一般不通过上面的方式来使用。
-        CoffeeApplication app = (CoffeeApplication) getApplication();
-        app.getCoffeeComponent().injectActivity(this);
-        mCoffeeMaker.brew();
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
+
+        MyApplication app = (MyApplication) getApplication();
+        UserManager userManager = app.getUserManager();
+        if (!userManager.isUserLoggedIn()) {
+            if (!userManager.isUserRegistered()) {
+                startActivity(new Intent(this, RegistrationActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
             }
-        });
+        } else {
+            mMainViewModel = new MainViewModel(userManager.getUserDataRepository());
+            setupViews();
+        }
+    }
+
+    private void setupViews() {
+        mNotificationView = findViewById(R.id.notifications);
+        TextView hello = findViewById(R.id.hello);
+        hello.setText(mMainViewModel.getWelcomeText());
+
+        Button settings = findViewById(R.id.settings);
+        settings.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mNotificationView.setText(mMainViewModel.getNotificationText());
     }
 
     @Override
