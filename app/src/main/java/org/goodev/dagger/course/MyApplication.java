@@ -2,20 +2,23 @@ package org.goodev.dagger.course;
 
 import android.app.Application;
 
-import org.goodev.dagger.course.storage.SharedPreferencesStorage;
-import org.goodev.dagger.course.user.UserManager;
+import org.goodev.dagger.course.di.AppComponent;
+import org.goodev.dagger.course.di.ContextModule;
+import org.goodev.dagger.course.di.DaggerAppComponent;
 
 
 public class MyApplication extends Application {
-    private UserManager mUserManager;
+    private AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mUserManager = new UserManager(new SharedPreferencesStorage(this));
+        mAppComponent = DaggerAppComponent.builder()
+                .contextModule(new ContextModule(this))
+                .build();
     }
 
-    public UserManager getUserManager() {
-        return mUserManager;
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 }

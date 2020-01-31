@@ -2,11 +2,15 @@ package org.goodev.dagger.course.user;
 
 import org.goodev.dagger.course.storage.Storage;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * 处理用户生命周期。
  * 用户注册、登录、登出功能。
  * 记录用户是否登录。
  */
+@Singleton
 public class UserManager {
     public static final String REGISTERED_USER = "registered_user";
     public static final String PASSWORD_SUFFIX = "password";
@@ -19,6 +23,7 @@ public class UserManager {
      */
     private UserDataRepository mDataRepository;
 
+    @Inject
     public UserManager(Storage storage) {
         mStorage = storage;
     }

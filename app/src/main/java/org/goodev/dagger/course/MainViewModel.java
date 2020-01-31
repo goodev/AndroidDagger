@@ -2,10 +2,13 @@ package org.goodev.dagger.course;
 
 import org.goodev.dagger.course.user.UserDataRepository;
 
+import javax.inject.Inject;
+
 public class MainViewModel {
     private UserDataRepository mRepository;
 
 
+    @Inject
     public MainViewModel(UserDataRepository repository) {
         mRepository = repository;
     }

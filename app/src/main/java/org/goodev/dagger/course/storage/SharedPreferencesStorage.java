@@ -3,10 +3,13 @@ package org.goodev.dagger.course.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import javax.inject.Inject;
+
 public class SharedPreferencesStorage implements Storage {
     public static final String NAME = "goodev";
     private SharedPreferences mPref;
 
+    @Inject
     public SharedPreferencesStorage(Context context) {
         mPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }

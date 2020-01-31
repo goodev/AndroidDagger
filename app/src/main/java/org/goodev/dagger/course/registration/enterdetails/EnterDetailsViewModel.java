@@ -1,11 +1,18 @@
 package org.goodev.dagger.course.registration.enterdetails;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class EnterDetailsViewModel {
     public static final int MAX_LENGTH = 5;
     private MutableLiveData<EnterDetailsFragment.EnterDetailsViewState> mEnterDetailsState = new MutableLiveData<>();
+
+    @Inject
+    public EnterDetailsViewModel() {
+
+    }
 
     public LiveData<EnterDetailsFragment.EnterDetailsViewState> getEnterDetailsViewState() {
         return mEnterDetailsState;

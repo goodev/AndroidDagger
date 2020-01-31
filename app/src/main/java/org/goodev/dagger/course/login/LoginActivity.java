@@ -12,23 +12,25 @@ import org.goodev.dagger.course.MainActivity;
 import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.registration.RegistrationActivity;
-import org.goodev.dagger.course.user.UserManager;
+
+import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    private LoginViewModel mLoginViewModel;
+    @Inject
+    LoginViewModel mLoginViewModel;
     private TextView mErrorTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyApplication app = (MyApplication) getApplication();
+        app.getAppComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        MyApplication app = (MyApplication) getApplication();
-        UserManager userManager = app.getUserManager();
-        // 监听 ViewModel 中的 loginState 状态变化
-        mLoginViewModel = new LoginViewModel(userManager);
+
         mLoginViewModel.getLoginState().observe(this, state -> {
             if (state == LoginViewModel.LoginViewState.SUCCESS) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));

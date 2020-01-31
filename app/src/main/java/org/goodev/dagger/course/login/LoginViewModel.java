@@ -2,6 +2,8 @@ package org.goodev.dagger.course.login;
 
 import org.goodev.dagger.course.user.UserManager;
 
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,6 +11,7 @@ public class LoginViewModel {
     private UserManager mUserManager;
     private MutableLiveData<LoginViewState> mLoginState = new MutableLiveData<>();
 
+    @Inject
     public LoginViewModel(UserManager userManager) {
         mUserManager = userManager;
     }

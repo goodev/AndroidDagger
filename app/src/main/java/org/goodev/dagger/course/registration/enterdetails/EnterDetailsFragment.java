@@ -1,5 +1,6 @@
 package org.goodev.dagger.course.registration.enterdetails;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.registration.RegistrationActivity;
 import org.goodev.dagger.course.registration.RegistrationViewModel;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,28 +29,33 @@ public class EnterDetailsFragment extends Fragment {
      * <p>
      * 这里定义这两个简单的 ViewModel 只是为了演示不同生命周期的 ViewModels。
      */
-    private RegistrationViewModel mRegistrationViewModel;
-    private EnterDetailsViewModel mEnterDetailsViewModel;
+    @Inject
+    RegistrationViewModel mRegistrationViewModel;
+    @Inject
+    EnterDetailsViewModel mEnterDetailsViewModel;
 
     private TextView mErrorTextView;
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MyApplication application = (MyApplication) getActivity().getApplication();
+        application.getAppComponent().inject(this);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_enter_details, container, false);
 
-        RegistrationActivity activity = (RegistrationActivity) getActivity();
-        mRegistrationViewModel = activity.getRegistrationViewModel();
-
-        mEnterDetailsViewModel = new EnterDetailsViewModel();
         mEnterDetailsViewModel.getEnterDetailsViewState().observe(getViewLifecycleOwner(), state -> {
             if (state instanceof EnterDetailsSuccess) {
                 String username = mUsernameEditText.getText().toString();
                 String password = mPasswordEditText.getText().toString();
-                System.out.println("username = " + username + ", password = " + password );
                 mRegistrationViewModel.updateUserData(username, password);
+                RegistrationActivity activity = (RegistrationActivity) getActivity();
                 activity.onDetailsEntered();
             } else if (state instanceof EnterDetailsError) {
                 mErrorTextView.setText(((EnterDetailsError) state).mError);

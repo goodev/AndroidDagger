@@ -8,21 +8,24 @@ import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.registration.enterdetails.EnterDetailsFragment;
 import org.goodev.dagger.course.registration.termsandconditions.TermsAndConditionsFragment;
-import org.goodev.dagger.course.user.UserManager;
+
+import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private RegistrationViewModel mRegistrationViewModel;
+    @Inject
+    RegistrationViewModel mRegistrationViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        MyApplication app = (MyApplication) getApplication();
+        app.getAppComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        MyApplication app = (MyApplication) getApplication();
-        UserManager userManager = app.getUserManager();
-        mRegistrationViewModel = new RegistrationViewModel(userManager);
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_holder, new EnterDetailsFragment())
                 .commit();

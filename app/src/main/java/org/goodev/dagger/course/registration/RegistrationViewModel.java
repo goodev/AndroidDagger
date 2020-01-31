@@ -2,12 +2,18 @@ package org.goodev.dagger.course.registration;
 
 import org.goodev.dagger.course.user.UserManager;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+// TODO 暂时使用单例
+@Singleton
 public class RegistrationViewModel {
     private UserManager mUserManager;
     private String mUsername;
     private String mPassword;
     private Boolean mAcceptedTCs;
 
+    @Inject
     public RegistrationViewModel(UserManager userManager) {
         mUserManager = userManager;
     }
@@ -23,9 +29,16 @@ public class RegistrationViewModel {
     }
 
     public void registerUser() {
-        assert (mUsername != null);
-        assert (mPassword != null);
-        assert (mAcceptedTCs);
+        if (mUsername == null) {
+            throw new RuntimeException("username can not be null");
+        }
+        if (mPassword == null) {
+            throw new RuntimeException("password can not be null");
+        }
+
+        if (!mAcceptedTCs) {
+            throw new RuntimeException("must accept Terms");
+        }
         mUserManager.registerUser(mUsername, mPassword);
     }
 }

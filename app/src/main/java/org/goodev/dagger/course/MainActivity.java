@@ -15,16 +15,24 @@ import org.goodev.dagger.course.registration.RegistrationActivity;
 import org.goodev.dagger.course.settings.SettingsActivity;
 import org.goodev.dagger.course.user.UserManager;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainViewModel mMainViewModel;
+    @Inject
+    MainViewModel mMainViewModel;
+    @Inject
+    UserManager mUserManager;
     private TextView mNotificationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        MyApplication app = (MyApplication) getApplication();
+        app.getAppComponent().inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -34,10 +42,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
-        MyApplication app = (MyApplication) getApplication();
-        UserManager userManager = app.getUserManager();
-        if (!userManager.isUserLoggedIn()) {
-            if (!userManager.isUserRegistered()) {
+        if (!mUserManager.isUserLoggedIn()) {
+            if (!mUserManager.isUserRegistered()) {
                 startActivity(new Intent(this, RegistrationActivity.class));
                 finish();
             } else {
@@ -45,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         } else {
-            mMainViewModel = new MainViewModel(userManager.getUserDataRepository());
             setupViews();
         }
     }
