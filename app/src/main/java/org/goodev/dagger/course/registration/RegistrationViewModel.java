@@ -1,12 +1,11 @@
 package org.goodev.dagger.course.registration;
 
+import org.goodev.dagger.course.di.ActivityScope;
 import org.goodev.dagger.course.user.UserManager;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-// TODO 暂时使用单例
-@Singleton
+@ActivityScope
 public class RegistrationViewModel {
     private UserManager mUserManager;
     private String mUsername;
