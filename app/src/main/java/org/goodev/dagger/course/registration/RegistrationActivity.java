@@ -6,6 +6,7 @@ import android.os.Bundle;
 import org.goodev.dagger.course.MainActivity;
 import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
+import org.goodev.dagger.course.di.AppComponent;
 import org.goodev.dagger.course.registration.enterdetails.EnterDetailsFragment;
 import org.goodev.dagger.course.registration.termsandconditions.TermsAndConditionsFragment;
 
@@ -15,24 +16,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
+    // 注意该变量并没有 @Inject 注解，而是手工从父部件中创建的
+    RegistrationComponent mSubcomponent;
     @Inject
     RegistrationViewModel mRegistrationViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         MyApplication app = (MyApplication) getApplication();
-        app.getAppComponent().inject(this);
-
+        AppComponent appComponent = app.getAppComponent();
+        mSubcomponent = appComponent.registrationComponent().create();
+        mSubcomponent.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_holder, new EnterDetailsFragment())
                 .commit();
     }
 
-    public RegistrationViewModel getRegistrationViewModel() {
-        return mRegistrationViewModel;
+    // 把子部件暴露给 Fragment 使用
+    public RegistrationComponent getRegistrationComponent() {
+        return mSubcomponent;
     }
 
     /**

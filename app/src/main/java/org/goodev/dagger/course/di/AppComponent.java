@@ -2,9 +2,7 @@ package org.goodev.dagger.course.di;
 
 import org.goodev.dagger.course.MainActivity;
 import org.goodev.dagger.course.login.LoginActivity;
-import org.goodev.dagger.course.registration.RegistrationActivity;
-import org.goodev.dagger.course.registration.enterdetails.EnterDetailsFragment;
-import org.goodev.dagger.course.registration.termsandconditions.TermsAndConditionsFragment;
+import org.goodev.dagger.course.registration.RegistrationComponent;
 import org.goodev.dagger.course.settings.SettingsActivity;
 
 import javax.inject.Singleton;
@@ -12,15 +10,14 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {StorageModule.class, ContextModule.class})
+@Component(modules = {StorageModule.class, ContextModule.class, AppSubcomponents.class})
 public interface AppComponent {
-    void inject(RegistrationActivity activity);
-
     void inject(MainActivity activity);
 
-    void inject(EnterDetailsFragment fragment);
-
-    void inject(TermsAndConditionsFragment fragment);
     void inject(LoginActivity activity);
+
     void inject(SettingsActivity activity);
+
+    // 在 父部件中对外暴露创建子部件对象的工厂类
+    RegistrationComponent.Factory registrationComponent();
 }

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.registration.RegistrationActivity;
 import org.goodev.dagger.course.registration.RegistrationViewModel;
@@ -25,8 +24,7 @@ public class TermsAndConditionsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        MyApplication application = (MyApplication) getActivity().getApplication();
-        application.getAppComponent().inject(this);
+        ((RegistrationActivity) requireActivity()).getRegistrationComponent().inject(this);
     }
 
     @Nullable
