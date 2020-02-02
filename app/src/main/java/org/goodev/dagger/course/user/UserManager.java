@@ -12,32 +12,45 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class UserManager {
+    public static final String TAG = "UserManager";
     public static final String REGISTERED_USER = "registered_user";
     public static final String PASSWORD_SUFFIX = "password";
 
     private Storage mStorage;
+    // 管理用户信息的子部件
+    private UserComponent mUserComponent;
+    // 用来创建 UserComponent 的工厂实现，由 Dagger 注入
+    private UserComponent.Factory mUserComponentFactory;
 
-    /**
-     *  UserDataRepository 管理登录用户的信息。 当用户登录的时候，就创建一个属于该用户的新的
-     *  UserDataRepository 对象。当用户登出的时候，UserDataRepository 对象为 null。
-     */
-    private UserDataRepository mDataRepository;
 
     @Inject
-    public UserManager(Storage storage) {
+    public UserManager(Storage storage, UserComponent.Factory factory) {
         mStorage = storage;
+        mUserComponentFactory = factory;
+    }
+
+    // 对外暴露 UserComponent
+    public UserComponent getUserComponent() {
+        return mUserComponent;
+    }
+
+    // 用户登录后，通过工厂类来创建 UserComponent
+    private void userJustLoggedIn() {
+        mUserComponent = mUserComponentFactory.create();
+    }
+
+    // 用户退出登录的时候， 把 mUserComponent 销毁
+    public void logout() {
+        mUserComponent = null;
+    }
+
+    // 如果 mUserComponent 对象存在，说明用户已经登录
+    public boolean isUserLoggedIn() {
+        return mUserComponent != null;
     }
 
     public String getUsername() {
         return mStorage.getString(REGISTERED_USER);
-    }
-
-    public UserDataRepository getUserDataRepository() {
-        return mDataRepository;
-    }
-
-    public boolean isUserLoggedIn() {
-        return mDataRepository != null;
     }
 
     public boolean isUserRegistered() {
@@ -66,19 +79,11 @@ public class UserManager {
         return true;
     }
 
-    public void logout() {
-        mDataRepository = null;
-    }
-
     public void unregister() {
         String username = mStorage.getString(REGISTERED_USER);
         mStorage.setString(REGISTERED_USER, "");
         mStorage.setString(username + PASSWORD_SUFFIX, "");
         logout();
-    }
-
-    private void userJustLoggedIn() {
-        mDataRepository = new UserDataRepository(this);
     }
 
 }

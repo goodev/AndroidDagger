@@ -24,15 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     MainViewModel mMainViewModel;
-    @Inject
     UserManager mUserManager;
     private TextView mNotificationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MyApplication app = (MyApplication) getApplication();
-        app.getAppComponent().inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -41,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
-
+        MyApplication app = (MyApplication) getApplication();
+        mUserManager = app.getAppComponent().userManager();
         if (!mUserManager.isUserLoggedIn()) {
             if (!mUserManager.isUserRegistered()) {
                 startActivity(new Intent(this, RegistrationActivity.class));
@@ -51,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         } else {
+            // 如果用户已登录，则从 mUserManager 中获取 UserComponent 子部件并注入该 Activity
+            mUserManager.getUserComponent().inject(this);
             setupViews();
         }
     }

@@ -2,9 +2,11 @@ package org.goodev.dagger.course;
 
 import org.goodev.dagger.course.storage.FakeStorage;
 import org.goodev.dagger.course.storage.Storage;
+import org.goodev.dagger.course.user.UserComponent;
 import org.goodev.dagger.course.user.UserManager;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,8 +19,11 @@ public class UserManagerTest {
 
     @Before
     public void setup() {
+        UserComponent.Factory factory = Mockito.mock(UserComponent.Factory.class);
+        UserComponent component = Mockito.mock(UserComponent.class);
+        Mockito.when(factory.create()).thenReturn(component);
         storage = new FakeStorage();
-        userManager = new UserManager(storage);
+        userManager = new UserManager(storage, factory);
     }
 
     @Test
