@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         MyApplication app = (MyApplication) getApplication();
-        app.getAppComponent().inject(this);
+        app.getAppComponent().loginComponent().create().inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
