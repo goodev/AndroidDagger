@@ -11,7 +11,12 @@ import android.widget.TextView;
 import org.goodev.dagger.course.MainActivity;
 import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
+import org.goodev.dagger.course.di.OnlyDateFormat;
+import org.goodev.dagger.course.di.WithTimeDateFormat;
 import org.goodev.dagger.course.registration.RegistrationActivity;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -21,6 +26,14 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity {
     @Inject
     LoginViewModel mLoginViewModel;
+
+    @Inject
+    @OnlyDateFormat
+    DateFormat mDateFormat;
+    @Inject
+    @WithTimeDateFormat
+    DateFormat mDateTimeFormat;
+
     private TextView mErrorTextView;
 
     @Override
@@ -30,12 +43,17 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        TextView textView = findViewById(R.id.textView);
+        String date = mDateFormat.format(new Date());
+        textView.setText(getString(R.string.welcome_dagger_with_date, date));
 
         mLoginViewModel.getLoginState().observe(this, state -> {
             if (state == LoginViewModel.LoginViewState.SUCCESS) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             } else if (state == LoginViewModel.LoginViewState.ERROR) {
+                String time = mDateTimeFormat.format(new Date());
+                mErrorTextView.setText(getString(R.string.login_error_with_time, time));
                 mErrorTextView.setVisibility(View.VISIBLE);
             }
         });

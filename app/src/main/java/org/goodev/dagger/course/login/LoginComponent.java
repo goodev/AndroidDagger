@@ -8,7 +8,7 @@ import dagger.Subcomponent;
  * 登录界面相关的子部件
  */
 @ActivityScope
-@Subcomponent
+@Subcomponent(modules = LoginModule.class)
 public interface LoginComponent {
     @Subcomponent.Factory
     interface Factory {
