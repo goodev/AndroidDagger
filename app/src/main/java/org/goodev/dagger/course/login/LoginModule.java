@@ -1,6 +1,7 @@
 package org.goodev.dagger.course.login;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import org.goodev.dagger.course.di.OnlyDateFormat;
 import org.goodev.dagger.course.di.WithTimeDateFormat;
@@ -19,6 +20,23 @@ import dagger.Provides;
  */
 @Module
 public class LoginModule {
+    public static final String TAG = "LoginModule";
+
+    // 使用系统定义的 Named 限定符
+    @Provides
+    @Named("yyyy-MM-dd")
+    DateFormat providerYyyyMMddDateFormat() {
+        Log.e(TAG, "providerYyyyMMddDateFormat() called");
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    }
+
+    @Provides
+    @Named("yyyy-MM-dd hh:mm:ss")
+    DateFormat providerYyyyWithTimeFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+    }
+
+    // 自定义 Qualifier
     @Provides
     @OnlyDateFormat
     DateFormat providerDateFormat() {

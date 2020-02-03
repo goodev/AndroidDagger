@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,11 +30,20 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     LoginViewModel mLoginViewModel;
 
+    // 自定义 Qualifier
     @Inject
     @OnlyDateFormat
-    DateFormat mDateFormat;
+    Provider<DateFormat> mDateFormat1;
     @Inject
     @WithTimeDateFormat
+    DateFormat mDateTimeFormat2;
+
+    // 使用系统定义的 Named 限定符
+    @Inject
+    @Named("yyyy-MM-dd")
+    Provider<DateFormat> mDateFormat;
+    @Inject
+    @Named("yyyy-MM-dd hh:mm:ss")
     DateFormat mDateTimeFormat;
 
     private TextView mErrorTextView;
@@ -44,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         TextView textView = findViewById(R.id.textView);
-        String date = mDateFormat.format(new Date());
+        String date = mDateFormat.get().format(new Date());
         textView.setText(getString(R.string.welcome_dagger_with_date, date));
 
         mLoginViewModel.getLoginState().observe(this, state -> {
@@ -90,6 +102,8 @@ public class LoginActivity extends AppCompatActivity {
             String username = usernameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             mLoginViewModel.login(username, password);
+            String date = mDateFormat.get().format(new Date());
+            Log.e("TAG", "setupViews: "+date );
         });
 
         findViewById(R.id.unregister).setOnClickListener(view -> {
