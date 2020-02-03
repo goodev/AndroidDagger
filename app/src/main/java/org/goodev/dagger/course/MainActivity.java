@@ -1,6 +1,7 @@
 package org.goodev.dagger.course;
 
 import android.content.Intent;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,10 +11,15 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.goodev.dagger.course.di.IdType;
 import org.goodev.dagger.course.login.LoginActivity;
 import org.goodev.dagger.course.registration.RegistrationActivity;
 import org.goodev.dagger.course.settings.SettingsActivity;
+import org.goodev.dagger.course.user.User;
 import org.goodev.dagger.course.user.UserManager;
+
+import java.util.Comparator;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -24,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     MainViewModel mMainViewModel;
+
+    @Inject
+    Map<Integer, Sensor> mSensorMap;
+    @Inject
+    Map<IdType, Comparator<User>> mIdComparatorMap;
+
     UserManager mUserManager;
     private TextView mNotificationView;
 
