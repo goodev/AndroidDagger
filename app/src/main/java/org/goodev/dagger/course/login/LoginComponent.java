@@ -8,12 +8,7 @@ import dagger.Subcomponent;
  * 登录界面相关的子部件
  */
 @ActivityScope
-@Subcomponent(modules = LoginModule.class)
+@Subcomponent(modules = {LoginModule.class, VibratorModule.class})
 public interface LoginComponent {
-    @Subcomponent.Factory
-    interface Factory {
-        LoginComponent create();
-    }
-
     void inject(LoginActivity activity);
 }

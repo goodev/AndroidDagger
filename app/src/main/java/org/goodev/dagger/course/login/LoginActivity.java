@@ -2,6 +2,7 @@ package org.goodev.dagger.course.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -51,7 +52,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         MyApplication app = (MyApplication) getApplication();
-        app.getAppComponent().loginComponent().create().inject(this);
+        Vibrator vibrator = app.getSystemService(Vibrator.class);
+        VibratorModule vibratorModule = new VibratorModule(vibrator);
+        app.getAppComponent().loginComponent(vibratorModule).inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
