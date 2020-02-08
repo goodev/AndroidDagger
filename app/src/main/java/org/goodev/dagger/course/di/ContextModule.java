@@ -15,16 +15,6 @@ import dagger.multibindings.IntoMap;
 
 @Module
 public class ContextModule {
-    private Context mContext;
-
-    public ContextModule(Context context) {
-        mContext = context;
-    }
-
-    @Provides
-    Context getContext() {
-        return mContext;
-    }
 
     @Provides // 说明这是一个对象提供函数
     @IntoMap // 说明该函数提供的对象被放到一个 Map value 中

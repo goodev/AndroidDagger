@@ -2,13 +2,10 @@ package org.goodev.dagger.course.login;
 
 import android.os.Vibrator;
 
-import dagger.Module;
-import dagger.Provides;
-
 /**
- * 演示子部件带参数的 模块使用方式
+ * 在子部件使用 @BindsInstance 后，该模块可以删除了
  */
-@Module
+//@Module
 public class VibratorModule {
     private Vibrator mVibrator;
 
@@ -16,7 +13,7 @@ public class VibratorModule {
         mVibrator = vibrator;
     }
 
-    @Provides
+    //@Provides
     public Vibrator provideVibrate() {
         return mVibrator;
     }

@@ -31,6 +31,9 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     LoginViewModel mLoginViewModel;
 
+    @Inject
+    Vibrator mVibrator;
+
     // 自定义 Qualifier
     @Inject
     @OnlyDateFormat
@@ -53,8 +56,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         MyApplication app = (MyApplication) getApplication();
         Vibrator vibrator = app.getSystemService(Vibrator.class);
-        VibratorModule vibratorModule = new VibratorModule(vibrator);
-        app.getAppComponent().loginComponent(vibratorModule).inject(this);
+        app.getAppComponent()
+                .loginComponentBuilder()
+                .vibrator(vibrator)
+                .builder().inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
