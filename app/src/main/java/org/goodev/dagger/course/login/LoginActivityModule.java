@@ -1,18 +1,16 @@
 package org.goodev.dagger.course.login;
 
-import dagger.Binds;
+import org.goodev.dagger.course.di.ActivityScope;
+
 import dagger.Module;
-import dagger.android.AndroidInjector;
-import dagger.multibindings.ClassKey;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
 /**
- * 该模块把 LoginComponent 子部件的工厂类绑定到父部件的 Map 集合中
+ * 删除 LoginComponent 子部件，使用 ContributesAndroidInjector 自动生成
  */
-@Module(subcomponents = LoginComponent.class)
+@Module
 public interface LoginActivityModule {
-    @Binds
-    @IntoMap
-    @ClassKey(LoginActivity.class)
-    AndroidInjector.Factory<?> loginActivityFactory(LoginComponent.Factory factory);
+    @ActivityScope // 把子部件的 Scope 注解放到这里
+    @ContributesAndroidInjector(modules = {LoginModule.class}) // 子部件的模块放到这里
+    LoginActivity contributeLoginAndroidInjector();
 }
