@@ -2,7 +2,6 @@ package org.goodev.dagger.course.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.goodev.dagger.course.MainActivity;
-import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.di.OnlyDateFormat;
 import org.goodev.dagger.course.di.WithTimeDateFormat;
@@ -26,15 +24,13 @@ import javax.inject.Provider;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import dagger.android.AndroidInjection;
 
 public class LoginActivity extends AppCompatActivity {
+
     @Inject
     LoginViewModel mLoginViewModel;
 
-    @Inject
-    Vibrator mVibrator;
-
-    // 自定义 Qualifier
     @Inject
     @OnlyDateFormat
     Provider<DateFormat> mDateFormat1;
@@ -54,12 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        MyApplication app = (MyApplication) getApplication();
-        Vibrator vibrator = app.getSystemService(Vibrator.class);
-        app.getAppComponent()
-                .loginComponentFactory()
-                .create(vibrator)
-                .inject(this);
+        AndroidInjection.inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -111,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = passwordEditText.getText().toString();
             mLoginViewModel.login(username, password);
             String date = mDateFormat.get().format(new Date());
-            Log.e("TAG", "setupViews: "+date );
+            Log.e("TAG", "setupViews: " + date);
         });
 
         findViewById(R.id.unregister).setOnClickListener(view -> {
