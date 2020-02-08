@@ -13,14 +13,10 @@ import dagger.Subcomponent;
 @ActivityScope
 @Subcomponent(modules = {LoginModule.class})
 public interface LoginComponent {
-    @Subcomponent.Builder
-    interface Builder{
-        // 子部件上通过 @BindsInstance 函数来绑定 Vibrator 对象，
-        // 所以之前的 VibratorModule 模块就可以删除不要了。
-        @BindsInstance
-        Builder vibrator(Vibrator vibrator);
-
-        LoginComponent builder();
+    @Subcomponent.Factory
+    interface Factory{
+        // 工厂模式只需要一个 create 函数，在该函数参数为需要外部提供的对象
+        LoginComponent create(@BindsInstance Vibrator vibrator);
     }
     void inject(LoginActivity activity);
 }

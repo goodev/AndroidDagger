@@ -57,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
         MyApplication app = (MyApplication) getApplication();
         Vibrator vibrator = app.getSystemService(Vibrator.class);
         app.getAppComponent()
-                .loginComponentBuilder()
-                .vibrator(vibrator)
-                .builder().inject(this);
+                .loginComponentFactory()
+                .create(vibrator)
+                .inject(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

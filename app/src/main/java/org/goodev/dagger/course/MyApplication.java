@@ -12,9 +12,9 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mAppComponent = DaggerAppComponent.builder()
-                .appContext(this)
-                .build();
+        // 使用 factory 来创建部件对象
+        mAppComponent = DaggerAppComponent.factory()
+                .create(this);
     }
 
     public AppComponent getAppComponent() {
