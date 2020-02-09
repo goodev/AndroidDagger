@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.goodev.dagger.course.MainActivity;
-import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
-import org.goodev.dagger.course.di.AppComponent;
 import org.goodev.dagger.course.registration.enterdetails.EnterDetailsFragment;
 import org.goodev.dagger.course.registration.termsandconditions.TermsAndConditionsFragment;
 
@@ -14,29 +12,31 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
 
-public class RegistrationActivity extends AppCompatActivity {
-    // 注意该变量并没有 @Inject 注解，而是手工从父部件中创建的
-    RegistrationComponent mSubcomponent;
+public class RegistrationActivity extends AppCompatActivity implements HasAndroidInjector {
+    @Inject
+    DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
+
     @Inject
     RegistrationViewModel mRegistrationViewModel;
 
     @Override
+    public AndroidInjector<Object> androidInjector() {
+        return dispatchingAndroidInjector;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        MyApplication app = (MyApplication) getApplication();
-        AppComponent appComponent = app.getAppComponent();
-        mSubcomponent = appComponent.registrationComponent().create();
-        mSubcomponent.inject(this);
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_holder, new EnterDetailsFragment())
                 .commit();
-    }
-
-    // 把子部件暴露给 Fragment 使用
-    public RegistrationComponent getRegistrationComponent() {
-        return mSubcomponent;
     }
 
     /**
@@ -66,4 +66,5 @@ public class RegistrationActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

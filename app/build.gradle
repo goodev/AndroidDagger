@@ -49,7 +49,7 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.25.3'
 
     api 'com.google.dagger:dagger-android:2.25.3'
-    //api 'com.google.dagger:dagger-android-support:2.25.3'  // if you use the support libraries
+    api 'com.google.dagger:dagger-android-support:2.25.3'  // 使用 support 库则需要启用这个
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.25.3'
 
 

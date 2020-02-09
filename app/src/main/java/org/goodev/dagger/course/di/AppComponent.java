@@ -4,7 +4,7 @@ import android.content.Context;
 
 import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.login.LoginActivityModule;
-import org.goodev.dagger.course.registration.RegistrationComponent;
+import org.goodev.dagger.course.registration.RegistrationModule;
 import org.goodev.dagger.course.user.UserManager;
 
 import javax.inject.Singleton;
@@ -17,6 +17,7 @@ import dagger.android.AndroidInjectionModule;
 @Component(modules = {
         AndroidInjectionModule.class,
         LoginActivityModule.class,
+        RegistrationModule.ActivityModule.class,
         StorageModule.class,
         ContextModule.class,
         AppSubcomponents.class
@@ -33,7 +34,4 @@ public interface AppComponent {
     }
 
     UserManager userManager();
-
-    // 在 父部件中对外暴露创建子部件对象的工厂类
-    RegistrationComponent.Factory registrationComponent();
 }
