@@ -5,8 +5,11 @@ import org.goodev.dagger.course.storage.Storage;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ApplicationComponent;
 
 @Module
+@InstallIn(ApplicationComponent.class)
 public abstract class StorageModule {
 
     @Binds

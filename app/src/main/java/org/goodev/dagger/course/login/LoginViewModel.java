@@ -6,7 +6,9 @@ import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import dagger.hilt.android.scopes.ActivityScoped;
 
+@ActivityScoped
 public class LoginViewModel {
     private UserManager mUserManager;
     private MutableLiveData<LoginViewState> mLoginState = new MutableLiveData<>();

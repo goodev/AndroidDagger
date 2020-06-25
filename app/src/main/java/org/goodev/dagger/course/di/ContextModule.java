@@ -10,17 +10,21 @@ import java.util.Comparator;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ApplicationComponent;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.multibindings.IntKey;
 import dagger.multibindings.IntoMap;
 
 @Module
+@InstallIn(ApplicationComponent.class)
 public class ContextModule {
 
     @Provides // 说明这是一个对象提供函数
     @IntoMap // 说明该函数提供的对象被放到一个 Map value 中
     @IntKey(Sensor.TYPE_STEP_COUNTER)
         // 定义 Map 的 key
-    Sensor providerStepSensor(Context context) {
+    Sensor providerStepSensor(@ApplicationContext Context context) {
         SensorManager manager = context.getSystemService(SensorManager.class);
         return manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
     }
@@ -28,7 +32,7 @@ public class ContextModule {
     @Provides
     @IntoMap
     @IntKey(Sensor.TYPE_ACCELEROMETER)
-    Sensor providerAccSensor(Context context) {
+    Sensor providerAccSensor(@ApplicationContext Context context) {
         SensorManager manager = context.getSystemService(SensorManager.class);
         return manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
@@ -36,7 +40,7 @@ public class ContextModule {
     @Provides
     @IntoMap
     @IntKey(Sensor.TYPE_GRAVITY)
-    Sensor providerGravitySensor(Context context) {
+    Sensor providerGravitySensor(@ApplicationContext Context context) {
         SensorManager manager = context.getSystemService(SensorManager.class);
         return manager.getDefaultSensor(Sensor.TYPE_GRAVITY);
     }

@@ -12,26 +12,15 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasAndroidInjector;
+import dagger.hilt.android.AndroidEntryPoint;
 
-public class RegistrationActivity extends AppCompatActivity implements HasAndroidInjector {
-    @Inject
-    DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
-
+@AndroidEntryPoint
+public class RegistrationActivity extends AppCompatActivity  {
     @Inject
     RegistrationViewModel mRegistrationViewModel;
 
     @Override
-    public AndroidInjector<Object> androidInjector() {
-        return dispatchingAndroidInjector;
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         getSupportFragmentManager().beginTransaction()

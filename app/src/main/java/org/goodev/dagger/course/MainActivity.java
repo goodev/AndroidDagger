@@ -25,7 +25,9 @@ import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     @Inject
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     Map<IdType, Comparator<User>> mIdComparatorMap;
 
+    @Inject
     UserManager mUserManager;
     private TextView mNotificationView;
 
@@ -49,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
-        MyApplication app = (MyApplication) getApplication();
-        mUserManager = app.getAppComponent().userManager();
         if (!mUserManager.isUserLoggedIn()) {
             if (!mUserManager.isUserRegistered()) {
                 startActivity(new Intent(this, RegistrationActivity.class));
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             // 如果用户已登录，则从 mUserManager 中获取 UserComponent 子部件并注入该 Activity
-            mUserManager.getUserComponent().inject(this);
             setupViews();
         }
     }

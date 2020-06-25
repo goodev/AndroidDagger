@@ -17,36 +17,28 @@ public class UserManager {
     public static final String PASSWORD_SUFFIX = "password";
 
     private Storage mStorage;
-    // 管理用户信息的子部件
-    private UserComponent mUserComponent;
-    // 用来创建 UserComponent 的工厂实现，由 Dagger 注入
-    private UserComponent.Factory mUserComponentFactory;
+    private UserDataRepository mUserComponentFactory;
 
 
     @Inject
-    public UserManager(Storage storage, UserComponent.Factory factory) {
+    public UserManager(Storage storage, UserDataRepository factory) {
         mStorage = storage;
         mUserComponentFactory = factory;
     }
 
-    // 对外暴露 UserComponent
-    public UserComponent getUserComponent() {
-        return mUserComponent;
-    }
-
     // 用户登录后，通过工厂类来创建 UserComponent
-    private void userJustLoggedIn() {
-        mUserComponent = mUserComponentFactory.create();
+    private void userJustLoggedIn(String username) {
+        mUserComponentFactory.initData(username);
     }
 
     // 用户退出登录的时候， 把 mUserComponent 销毁
     public void logout() {
-        mUserComponent = null;
+        mUserComponentFactory.initData(null);
     }
 
     // 如果 mUserComponent 对象存在，说明用户已经登录
     public boolean isUserLoggedIn() {
-        return mUserComponent != null;
+        return mUserComponentFactory.getUsername() != null;
     }
 
     public String getUsername() {
@@ -61,7 +53,7 @@ public class UserManager {
     public void registerUser(String username, String password) {
         mStorage.setString(REGISTERED_USER, username);
         mStorage.setString(username + PASSWORD_SUFFIX, password);
-        userJustLoggedIn();
+        userJustLoggedIn(username);
     }
 
     public boolean loginUser(String username, String password) {
@@ -75,7 +67,7 @@ public class UserManager {
             return false;
         }
 
-        userJustLoggedIn();
+        userJustLoggedIn(username);
         return true;
     }
 

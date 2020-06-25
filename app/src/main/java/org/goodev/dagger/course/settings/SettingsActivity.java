@@ -3,7 +3,6 @@ package org.goodev.dagger.course.settings;
 import android.content.Intent;
 import android.os.Bundle;
 
-import org.goodev.dagger.course.MyApplication;
 import org.goodev.dagger.course.R;
 import org.goodev.dagger.course.login.LoginActivity;
 
@@ -11,7 +10,9 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class SettingsActivity extends AppCompatActivity {
 
     @Inject
@@ -19,9 +20,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        MyApplication app = (MyApplication) getApplication();
-        app.getAppComponent().userManager().getUserComponent().inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setupViews();

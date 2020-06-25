@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 public class SharedPreferencesStorage implements Storage {
     public static final String NAME = "goodev";
     private SharedPreferences mPref;
 
     @Inject
-    public SharedPreferencesStorage(Context context) {
+    public SharedPreferencesStorage(@ApplicationContext Context context) {
         mPref = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
     }
 

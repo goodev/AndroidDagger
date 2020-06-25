@@ -1,11 +1,12 @@
 package org.goodev.dagger.course.registration;
 
-import org.goodev.dagger.course.di.ActivityScope;
 import org.goodev.dagger.course.user.UserManager;
 
 import javax.inject.Inject;
 
-@ActivityScope
+import dagger.hilt.android.scopes.ActivityScoped;
+
+@ActivityScoped
 public class RegistrationViewModel {
     private UserManager mUserManager;
     private String mUsername;

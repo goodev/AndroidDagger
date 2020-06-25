@@ -19,8 +19,9 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class EnterDetailsFragment extends Fragment {
     /**
      * RegistrationViewModel 用来管理用户的用户名和密码信息，
@@ -40,7 +41,6 @@ public class EnterDetailsFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
-        AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 

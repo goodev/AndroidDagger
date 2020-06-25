@@ -14,11 +14,14 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ActivityComponent;
 
 /**
  * LoginComponent 里面所用到的依赖对象
  */
 @Module
+@InstallIn(ActivityComponent.class)
 public class LoginModule {
     public static final String TAG = "LoginModule";
 

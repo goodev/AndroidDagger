@@ -15,15 +15,15 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import dagger.android.support.AndroidSupportInjection;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class TermsAndConditionsFragment extends Fragment {
     @Inject
     RegistrationViewModel mRegistrationViewModel;
 
     @Override
     public void onAttach(@NonNull Context context) {
-        AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 
